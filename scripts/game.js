@@ -1,8 +1,8 @@
 // ============================================================
-//  ОСНОВНАЯ ЛОГИКА ИГРЫ (с интеграцией auth)
+//  ОСНОВНАЯ ЛОГИКА ИГРЫ
 // ============================================================
 
-// --- Элементы регистрации ---
+// --- Элементы ---
 const authScreen = document.getElementById('auth-screen');
 const gameScreen = document.getElementById('game-screen');
 const authName = document.getElementById('auth-name');
@@ -41,7 +41,6 @@ authBtn.addEventListener('click', () => {
 
     const players = getPlayers();
 
-    // Если игрок есть — вход
     if (players[name]) {
         if (players[name].password !== password) {
             authError.textContent = '❌ Неверный пароль!';
@@ -52,7 +51,6 @@ authBtn.addEventListener('click', () => {
         return;
     }
 
-    // Новый игрок
     players[name] = {
         password: password,
         gender: gender,
@@ -66,9 +64,11 @@ authBtn.addEventListener('click', () => {
     startGame(name);
 });
 
-// --- Проверка авторизации при загрузке ---
-document.addEventListener('DOMContentLoaded', () => {
+// --- Проверка авторизации ---
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM загружен!');
     const username = checkAuth();
+    console.log('Проверка авторизации:', username);
     if (username) {
         startGame(username);
     }
@@ -87,10 +87,11 @@ let timeoutId = null;
 // ============================================================
 
 function startGame(username) {
+    console.log('Запуск игры для:', username);
+    
     authScreen.style.display = 'none';
     gameScreen.style.display = 'flex';
 
-    // Показываем имя
     document.getElementById('player-name').textContent = '👤 ' + username;
 
     const player = getPlayerData(username);
@@ -99,7 +100,6 @@ function startGame(username) {
             player.gender === 'female' ? '👩' : '🤖';
         document.getElementById('player-gender').textContent = genderEmoji;
 
-        // Загружаем монеты
         state = {
             coins: player.coins || 0,
             timer: 7,
@@ -109,6 +109,8 @@ function startGame(username) {
         };
         updateUI(state);
         loadNewSoul();
+    } else {
+        console.error('Игрок не найден:', username);
     }
 }
 
@@ -117,7 +119,8 @@ function startGame(username) {
 // ============================================================
 
 function loadNewSoul() {
-    // Очистка старых таймеров
+    console.log('Загрузка новой души');
+    
     if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
@@ -137,7 +140,6 @@ function loadNewSoul() {
     setButtonsEnabled(true);
     updateUI(state);
 
-    // Запуск таймера
     timerInterval = setInterval(() => {
         state.timer -= 1;
         updateUI(state);
@@ -153,8 +155,6 @@ function loadNewSoul() {
                 updateUI(state);
                 setHint('⏳ ЧИСТИЛИЩЕ... -15 🪙', 'result hell');
                 setSoulEmotion('crack');
-
-                // Сохраняем монеты
                 updateCoins(-15);
 
                 timeoutId = setTimeout(() => {
@@ -193,12 +193,7 @@ function endRound(playerChoice) {
         setHint(`✅ ОПРАВДАН! +50 🪙${bonusText}`, 'result heaven');
         setSoulEmotion('happy');
         flySoul();
-
-        // Сохраняем монеты
         updateCoins(50);
-        if (state.streak >= 5) {
-            updateCoins(50);
-        }
 
     } else {
         state.coins = Math.max(0, state.coins - 20);
@@ -206,8 +201,6 @@ function endRound(playerChoice) {
         setHint(`❌ ОСУЖДЁН! -20 🪙`, 'result hell');
         setSoulEmotion('angry');
         crackSoul();
-
-        // Сохраняем монеты
         updateCoins(-20);
     }
 
@@ -222,11 +215,13 @@ function endRound(playerChoice) {
 //  ОБРАБОТЧИКИ КНОПОК
 // ============================================================
 
-btnHeaven.addEventListener('click', () => {
+btnHeaven.addEventListener('click', function() {
+    console.log('Нажата кнопка В РАЙ');
     if (state.canAct) endRound('heaven');
 });
 
-btnHell.addEventListener('click', () => {
+btnHell.addEventListener('click', function() {
+    console.log('Нажата кнопка В АД');
     if (state.canAct) endRound('hell');
 });
 
@@ -234,7 +229,6 @@ btnHell.addEventListener('click', () => {
 //  СОХРАНЕНИЕ ПРИ ВЫХОДЕ
 // ============================================================
 
-// При закрытии вкладки сохраняем прогресс
 window.addEventListener('beforeunload', () => {
     const user = getCurrentUser();
     if (user && state.coins !== undefined) {
@@ -246,7 +240,6 @@ window.addEventListener('beforeunload', () => {
     }
 });
 
-// При сворачивании Telegram Mini App
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         const user = getCurrentUser();
@@ -259,3 +252,5 @@ document.addEventListener('visibilitychange', () => {
         }
     }
 });
+
+console.log('game.js загружен!');
