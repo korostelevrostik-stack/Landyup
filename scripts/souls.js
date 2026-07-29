@@ -23,10 +23,24 @@ const soulsDB = [
     { text: "Я помог незнакомцу донести сумки до дома", verdict: "heaven" },
     { text: "Я сломал чужой велосипед и убежал", verdict: "hell" },
     { text: "Я посадил дерево во дворе", verdict: "heaven" },
+    { text: "Я тайком доедал чужие обеды в офисе", verdict: "hell" },
+    { text: "Я уступил место пожилому человеку в автобусе", verdict: "heaven" },
+    { text: "Я подставил коллегу, чтобы не уволили меня", verdict: "hell" },
+    { text: "Я каждый день пишу добрые сообщения маме", verdict: "heaven" },
+    { text: "Я украл игрушку у ребёнка", verdict: "hell" },
+    { text: "Я помог бездомному найти работу", verdict: "heaven" },
+    { text: "Я сломал чужую машину и сбежал", verdict: "hell" },
+    { text: "Я каждое утро делаю зарядку", verdict: "heaven" },
+    { text: "Я съел чужой обед в офисе и сказал, что не я", verdict: "hell" },
+    { text: "Я перевёл бабушку через дорогу", verdict: "heaven" },
+    { text: "Я сломал копировальный аппарат и сбежал", verdict: "hell" },
+    { text: "Я каждый день кормлю бездомную кошку", verdict: "heaven" },
+    { text: "Я слил базу данных клиентов", verdict: "hell" },
+    { text: "Я помог ребенку найти родителей", verdict: "heaven" },
+    { text: "Я воровал деньги из кассы", verdict: "hell" },
+    { text: "Я отдал последние деньги на лечение", verdict: "heaven" },
 ];
 
-// Функция для получения случайной души
 function getRandomSoul() {
-    const index = Math.floor(Math.random() * soulsDB.length);
-    return { ...soulsDB[index], index };
+    return soulsDB[Math.floor(Math.random() * soulsDB.length)];
 }
