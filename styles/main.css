@@ -1,3 +1,8 @@
+/* ============================================================
+   АДВОКАТ ДЬЯВОЛА — ПОЛНЫЙ MAIN.CSS
+   ============================================================ */
+
+/* ---------- ГЛОБАЛЬНЫЕ СБРОСЫ ---------- */
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +13,7 @@
 
 body {
     background: #0a0a0a;
-    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     height: 100vh;
     overflow: hidden;
     display: flex;
@@ -16,6 +21,7 @@ body {
     color: white;
 }
 
+/* ---------- ВЕРХНЯЯ ПАНЕЛЬ ---------- */
 #top-panel {
     padding: 12px 16px 8px;
     background: linear-gradient(180deg, #1a1a1a 0%, transparent 100%);
@@ -41,22 +47,39 @@ body {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.1s ease;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     touch-action: manipulation;
+    letter-spacing: 0.5px;
 }
 
 .arrow:active {
     transform: scale(0.92);
 }
 
+.arrow:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    transform: scale(0.96);
+}
+
 .heaven {
     background: linear-gradient(135deg, #f7971e, #ffd200);
     color: #1a1a1a;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.25);
+}
+
+.heaven:active {
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
 }
 
 .hell {
     background: linear-gradient(135deg, #ff416c, #ff4b2b);
     color: white;
+    box-shadow: 0 4px 20px rgba(255, 65, 108, 0.25);
+}
+
+.hell:active {
+    box-shadow: 0 2px 10px rgba(255, 65, 108, 0.4);
 }
 
 #info {
@@ -70,12 +93,17 @@ body {
 
 #timer {
     color: #ffd700;
+    font-variant-numeric: tabular-nums;
+    min-width: 60px;
 }
 
 #coins {
     color: #ffd700;
+    min-width: 80px;
+    text-align: right;
 }
 
+/* ---------- ЦЕНТРАЛЬНАЯ ОБЛАСТЬ (ДУША) ---------- */
 #scene-container {
     flex: 1;
     width: 100%;
@@ -84,56 +112,238 @@ body {
     justify-content: center;
     position: relative;
     overflow: hidden;
+    min-height: 0;
 }
 
-#soul-emoji {
-    font-size: 120px;
-    transition: all 0.5s ease;
-    text-shadow: 0 0 60px rgba(255, 215, 0, 0.2);
+/* ---------- 2D МУЛЬТЯШНАЯ ДУША ---------- */
+#soul-container {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+/* Основная душа */
+#soul {
+    font-size: 90px;
     line-height: 1;
+    filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.35));
+    transition: all 0.4s ease;
+    animation: float 3s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
 }
 
-#soul-emoji.fly {
-    animation: flyUp 1s ease forwards;
+/* Лицо души */
+#soul-face {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 38px;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 3;
+    transition: all 0.3s ease;
+    margin-top: 8px;
 }
 
-#soul-emoji.crack {
-    animation: crackDown 0.8s ease forwards;
+/* Нимб */
+#soul-halo {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 55px;
+    opacity: 0.7;
+    animation: haloSpin 10s linear infinite;
+    z-index: 1;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
 }
 
+/* ---------- ЧАСТИЦЫ ВОКРУГ ДУШИ ---------- */
+.particle {
+    position: absolute;
+    font-size: 14px;
+    opacity: 0;
+    animation: particleFloat 2.5s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.particle:nth-child(3) { top: 5%; left: 5%; animation-delay: 0s; }
+.particle:nth-child(4) { top: 85%; right: 8%; animation-delay: 0.4s; }
+.particle:nth-child(5) { top: 15%; right: 8%; animation-delay: 0.8s; }
+.particle:nth-child(6) { bottom: 10%; left: 5%; animation-delay: 1.2s; }
+.particle:nth-child(7) { top: 0%; left: 50%; animation-delay: 1.6s; }
+.particle:nth-child(8) { bottom: 0%; right: 25%; animation-delay: 0.5s; }
+.particle:nth-child(9) { top: 40%; left: -3%; animation-delay: 1.0s; }
+.particle:nth-child(10) { top: 45%; right: -3%; animation-delay: 1.8s; }
+
+/* ---------- АНИМАЦИИ ДУШИ ---------- */
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px) scale(1);
+    }
+    50% {
+        transform: translateY(-18px) scale(1.06);
+    }
+}
+
+@keyframes haloSpin {
+    0% {
+        transform: translateX(-50%) rotate(0deg) scale(1);
+    }
+    50% {
+        transform: translateX(-50%) rotate(180deg) scale(1.1);
+    }
+    100% {
+        transform: translateX(-50%) rotate(360deg) scale(1);
+    }
+}
+
+@keyframes particleFloat {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0) rotate(0deg);
+    }
+    30% {
+        opacity: 0.8;
+        transform: translateY(-20px) scale(1.3) rotate(20deg);
+    }
+    70% {
+        opacity: 0.6;
+        transform: translateY(-40px) scale(1) rotate(-10deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-60px) scale(0.5) rotate(30deg);
+    }
+}
+
+/* ---------- ЭМОЦИИ ДУШИ (ЦВЕТА) ---------- */
+#soul.happy {
+    filter: drop-shadow(0 0 50px rgba(79, 195, 247, 0.7));
+    animation: floatHappy 2.5s ease-in-out infinite;
+}
+
+#soul.sad {
+    filter: drop-shadow(0 0 50px rgba(124, 77, 255, 0.6));
+    animation: floatSad 3s ease-in-out infinite;
+}
+
+#soul.angry {
+    filter: drop-shadow(0 0 50px rgba(255, 23, 68, 0.7));
+    animation: floatAngry 1.5s ease-in-out infinite;
+}
+
+#soul.fly {
+    animation: flyUp 1s ease forwards !important;
+    filter: drop-shadow(0 0 80px rgba(255, 215, 0, 0.9));
+}
+
+#soul.crack {
+    animation: crackDown 0.9s ease forwards !important;
+    filter: drop-shadow(0 0 60px rgba(255, 0, 0, 0.8));
+}
+
+@keyframes floatHappy {
+    0%,
+    100% {
+        transform: translateY(0) scale(1) rotate(-2deg);
+    }
+    50% {
+        transform: translateY(-20px) scale(1.08) rotate(2deg);
+    }
+}
+
+@keyframes floatSad {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-8px) scale(0.95);
+    }
+}
+
+@keyframes floatAngry {
+    0%,
+    100% {
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-5px) scale(1.05) rotate(-3deg);
+    }
+    75% {
+        transform: translateY(-5px) scale(1.05) rotate(3deg);
+    }
+}
+
+/* ---------- АНИМАЦИИ ВЗЛЕТА И ПАДЕНИЯ ---------- */
 @keyframes flyUp {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+    0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    40% {
+        transform: translateY(-60px) scale(1.4) rotate(-5deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-250px) scale(2) rotate(10deg);
+        opacity: 0;
+    }
 }
 
 @keyframes crackDown {
-    0% { transform: scale(1); opacity: 1; }
-    30% { transform: scale(1.3) rotate(10deg); }
-    100% { transform: scale(0) rotate(-20deg); opacity: 0; }
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    20% {
+        transform: scale(1.3) rotate(10deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5) rotate(-15deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0) rotate(30deg);
+        opacity: 0;
+    }
 }
 
+/* ---------- ПОДСКАЗКА ---------- */
 #hint {
     position: absolute;
     bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0,0,0,0.75);
-    backdrop-filter: blur(12px);
-    padding: 14px 24px;
-    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 14px 28px;
+    border-radius: 18px;
     font-size: 18px;
     text-align: center;
-    max-width: 85%;
-    border: 1px solid rgba(255,255,255,0.08);
+    max-width: 88%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     color: #eee;
     pointer-events: none;
     z-index: 20;
-    transition: opacity 0.3s ease;
-    min-height: 60px;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    min-height: 64px;
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1.4;
+    line-height: 1.5;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 #hint.result {
@@ -143,30 +353,174 @@ body {
 
 #hint.result.heaven {
     color: #ffd700;
-    border-color: rgba(255, 215, 0, 0.3);
+    border-color: rgba(255, 215, 0, 0.25);
+    background: rgba(255, 215, 0, 0.08);
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.15);
 }
 
 #hint.result.hell {
     color: #ff416c;
-    border-color: rgba(255, 65, 108, 0.3);
+    border-color: rgba(255, 65, 108, 0.25);
+    background: rgba(255, 65, 108, 0.08);
+    box-shadow: 0 8px 32px rgba(255, 65, 108, 0.15);
 }
 
+/* ---------- АДАПТИВ ---------- */
 @media (max-width: 480px) {
     .arrow {
         font-size: 15px;
         padding: 10px 0;
         max-width: 140px;
+        border-radius: 12px;
     }
+
     #info {
         font-size: 17px;
+        padding: 0 4px;
     }
+
     #hint {
-        font-size: 16px;
-        padding: 12px 16px;
-        bottom: 24px;
-        min-height: 50px;
+        font-size: 15px;
+        padding: 12px 18px;
+        bottom: 20px;
+        min-height: 52px;
+        max-width: 92%;
+        border-radius: 14px;
     }
-    #soul-emoji {
-        font-size: 90px;
+
+    #hint.result {
+        font-size: 18px;
     }
+
+    #soul-container {
+        width: 170px;
+        height: 170px;
+    }
+
+    #soul {
+        font-size: 70px;
+    }
+
+    #soul-face {
+        font-size: 30px;
+        margin-top: 4px;
+    }
+
+    #soul-halo {
+        font-size: 42px;
+        top: -8px;
+    }
+
+    .particle {
+        font-size: 11px;
+    }
+
+    #top-panel {
+        padding: 10px 12px 6px;
+    }
+
+    #arrows {
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+}
+
+@media (max-width: 380px) {
+    .arrow {
+        font-size: 13px;
+        padding: 8px 0;
+        max-width: 110px;
+    }
+
+    #soul-container {
+        width: 140px;
+        height: 140px;
+    }
+
+    #soul {
+        font-size: 55px;
+    }
+
+    #soul-face {
+        font-size: 24px;
+        margin-top: 4px;
+    }
+
+    #soul-halo {
+        font-size: 34px;
+        top: -4px;
+    }
+
+    #info {
+        font-size: 14px;
+    }
+
+    #hint {
+        font-size: 13px;
+        padding: 10px 14px;
+        min-height: 44px;
+        bottom: 16px;
+    }
+
+    #hint.result {
+        font-size: 15px;
+    }
+
+    .particle {
+        font-size: 9px;
+    }
+}
+
+/* ---------- ТЕМНАЯ ТЕМА (ДОПОЛНИТЕЛЬНО) ---------- */
+@media (prefers-color-scheme: light) {
+    body {
+        background: #0a0a0a;
+        /* Оставляем тёмную тему всегда, так атмосфернее */
+    }
+}
+
+/* ---------- УЛУЧШЕНИЯ ДЛЯ ТЕЛЕФОНОВ ---------- */
+@supports (-webkit-touch-callout: none) {
+    /* Фикс для Safari на iOS */
+    #hint {
+        padding-bottom: calc(14px + env(safe-area-inset-bottom));
+    }
+}
+
+/* ---------- АНИМАЦИЯ ПОЯВЛЕНИЯ ---------- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#soul-container {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* ---------- ЭФФЕКТ МЕРЦАНИЯ ДЛЯ НИМБА ---------- */
+@keyframes haloGlow {
+    0%,
+    100% {
+        filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+    }
+    50% {
+        filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.6));
+    }
+}
+
+#soul-halo {
+    animation: haloSpin 10s linear infinite, haloGlow 2s ease-in-out infinite;
+}
+
+/* ---------- БЛОКИРОВКА КНОПОК ПРИ АНИМАЦИИ ---------- */
+.arrow.loading {
+    opacity: 0.3;
+    pointer-events: none;
+    transform: scale(0.96); 
 }
