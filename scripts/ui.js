@@ -2,7 +2,6 @@
 //  УПРАВЛЕНИЕ ИНТЕРФЕЙСОМ + 2D ДУША
 // ============================================================
 
-// DOM-элементы
 const timerEl = document.getElementById('timer');
 const coinsEl = document.getElementById('coins');
 const hintEl = document.getElementById('hint');
@@ -12,19 +11,16 @@ const soulHaloEl = document.getElementById('soul-halo');
 const btnHeaven = document.getElementById('btn-heaven');
 const btnHell = document.getElementById('btn-hell');
 
-// --- Обновление UI ---
 function updateUI(state) {
     timerEl.textContent = `⏳ ${state.timer}`;
     coinsEl.textContent = `🪙 ${state.coins}`;
 }
 
-// --- Подсказка ---
 function setHint(text, className = '') {
     hintEl.textContent = text;
     hintEl.className = className;
 }
 
-// --- Эмоции души ---
 function setSoulEmotion(emotion) {
     const emojis = {
         neutral: '👻',
@@ -57,7 +53,6 @@ function setSoulEmotion(emotion) {
     soulHaloEl.textContent = halos[emotion] || '✨';
 }
 
-// --- Анимации ---
 function flySoul() {
     setSoulEmotion('fly');
     setTimeout(() => {
@@ -76,7 +71,6 @@ function resetSoul() {
     setSoulEmotion('neutral');
 }
 
-// --- Кнопки ---
 function setButtonsEnabled(enabled) {
     btnHeaven.disabled = !enabled;
     btnHell.disabled = !enabled;
