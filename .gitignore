@@ -1,0 +1,21 @@
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Логи
+*.log
+npm-debug.log*
+
+# Telegram Bot (если появится)
+telegram/config.js
+.env
+
+# Временные файлы
+*.tmp
+*.cache
+node_modules/
+dist/
